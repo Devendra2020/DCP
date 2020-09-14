@@ -1,35 +1,158 @@
 
-void serialize(Node *root,vector<int> &A)
-{
-    
-    if(root==NULL){
-        A.push_back(-1);
-        return;
+/*
+Problem Statement- 
+*/
+
+
+
+/*
+Input - 1 2 3 N N 4 6 N 5 N N 7 N
+Output - 3 5 7 6 4 2 
+*/
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Tree Node
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
     }
-    A.push_back(root->data);
-    serialize(root->left,A);
-    serialize(root->right,A);
+};
+
+// Function to Build Tree
+Node *buildTree(string str) {
+    // Corner Case
+    if (str.length() == 0 || str[0] == 'N')
+        return NULL;
+
+    // Creating vector of strings from input
+    // string after spliting by space
+    vector<string> ip;
+
+    istringstream iss(str);
+    for (string str; iss >> str;)
+        ip.push_back(str);
+
+    // Create the root of the tree
+    Node *root = new Node(stoi(ip[0]));
+
+    // Push the root to the queue
+    queue<Node *> queue;
+    queue.push(root);
+
+    // Starting from the second element
+    int i = 1;
+    while (!queue.empty() && i < ip.size()) {
+
+        // Get and remove the front of the queue
+        Node *currNode = queue.front();
+        queue.pop();
+
+        // Get the current Node's value from the string
+        string currVal = ip[i];
+
+        // If the left child is not null
+        if (currVal != "N") {
+
+            // Create the left child for the current Node
+            currNode->left = new Node(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->left);
+        }
+
+        // For the right child
+        i++;
+        if (i >= ip.size())
+            break;
+        currVal = ip[i];
+
+        // If the right child is not null
+        if (currVal != "N") {
+
+            // Create the right child for the current Node
+            currNode->right = new Node(stoi(currVal));
+
+            // Push it to the queue
+            queue.push(currNode->right);
+        }
+        i++;
+    }
+
+    return root;
 }
 
-Node* deSerialize(vector<int> &A ,int &ind){
-    if(ind>=A.size()) return NULL;
-    if(A[ind]==-1){
-        ind++;
-        return NULL;
-    }
-    Node* root = new Node();
-   root->data = A[ind];
-   ind++;
-   root->left=deSerialize(A,ind);
-   root->right=deSerialize(A,ind);
-}
- 
-Node * deSerialize(vector<int> &A)
+
+ // } Driver Code Ends
+
+
+/* A binary tree node has data, pointer to left child
+
+
+/*this  function serializes 
+the binary tree and stores 
+it in the vector A*/
+void serialize(Node *root,vector<int> &v)
 {
-   
-   int n=A.size();
-   if(n==0||A[0]==-1) return NULL;
-   int ind=0;
-   Node* root = deSerialize(A,ind);
-   return root;
+    if(!root){
+        v.push_back(-1);
+        return;
+    }
+    v.push_back(root->data);
+    serialize(root->left,v);
+    serialize(root->right,v);
 }
+
+/*this function deserializes
+ the serialized vector A*/
+ 
+ Node * helper(vector<int> &v,int *i){
+     if(*i>=v.size()||v[*i]==-1){ (*i)++; return NULL;}
+     Node * root=new Node(v[*i]);
+     (*i)++;
+     root->left=helper(v,i);
+     root->right=helper(v,i);
+     return root;
+ }
+ 
+Node * deSerialize(vector<int> &v)
+{
+    int i=0;
+   return helper(v,&i);
+}
+
+// { Driver Code Starts.
+
+void inorder(Node *root) {
+    if (root == NULL)
+        return;
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+int main() {
+    int tc;
+    scanf("%d ", &tc);
+    while (tc--) {
+        string treeString;
+        getline(cin, treeString);
+        Node *root = buildTree(treeString);
+        vector<int> A;
+        serialize(root, A);
+
+        Node *getRoot = deSerialize(A);
+        inorder(getRoot);
+        cout << "\n";
+
+    }
+
+
+    return 0;
+}  
