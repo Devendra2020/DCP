@@ -1,33 +1,42 @@
 
-#include <bits/stdc++.h> 
 
-using namespace std; 
+/*
+Problem Statement - Given a list of numbers and a number k, return whether any two numbers from the list add up to k.
 
-void printPairs(int arr[], int arr_size, int sum) 
-{ 
-	unordered_set<int> s; 
-	for (int i = 0; i < arr_size; i++) { 
-		int temp = sum - arr[i]; 
+For example, given [10, 15, 3, 7] and k of 17, return true since 10 + 7 is 17.
 
-		if (s.find(temp) != s.end()) 
-			cout << "Pair with given sum "
-				<< sum << " is ( 
-						" << arr[i] << ", 
-				" 
-					<< temp << ")" << endl; 
 
-		s.insert(arr[i]); 
-	} 
-} 
+*/
 
-                                  
-int main() 
-{ 
-	int A[] = { 1, 4, 45, 6, 10, 8 }; 
-	int n = 16; 
-	int arr_size = sizeof(A) / sizeof(A[0]); 
 
-	printPairs(A, arr_size, n); 
-
-	return 0; 
-} 
+#include<bits/stdc++.h>
+using namespace std;
+int main() {
+	int t;
+	cin >> t;
+	while(t--){
+	    int n,sum,flag =0;
+	    cin >> n >> sum;
+	    int a[n];
+	    for(int i = 0;i<n;i++)
+	        cin >> a[i];
+	    for(int i=0;i < n;i++){
+	        for(int j = 1;j<n;j++){
+	            if(a[i]+a[j] == sum)
+	                {
+	                 flag = 1;
+	                 break;
+	                    
+	                }
+	        }
+	        if(flag == 1)
+	             {
+	                 cout << "Yes" << endl;
+	                 break;
+	             }
+	    }
+	    if(flag == 0)
+	    cout << "No" << endl;
+	}
+	return 0;
+}
