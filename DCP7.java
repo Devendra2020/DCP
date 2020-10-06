@@ -1,5 +1,11 @@
-/*package whatever //do not write package name here */
+/*
+Problem Statement - Given the mapping a = 1, b = 2, ... z = 26, and an encoded message,
+count the number of ways it can be decoded.For example, the message '111' would give 3, 
+since it could be decoded as 'aaa', 'ka', and 'ak'.
 
+INPUT  - 121,1234 
+OUTPUT - 3, 3,
+*/
 import java.lang.*;
 import java.util.*;
 import java.io.*;
